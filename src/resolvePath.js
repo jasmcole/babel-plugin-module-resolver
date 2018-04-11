@@ -94,6 +94,10 @@ export default function resolvePath(sourcePath, currentFile, opts) {
     resolvedPath = resolver(sourcePath, absoluteCurrentFile, normalizedOpts);
     return resolvedPath !== null;
   });
+  
+  if (resolvedPath === null) {
+    return sourcePath;
+  }
 
   return resolvedPath;
 }
