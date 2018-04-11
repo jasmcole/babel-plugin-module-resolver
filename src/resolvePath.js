@@ -1,28 +1,44 @@
-import path from 'path';
+'use strict';
 
-import { warn } from './log';
-import mapToRelative from './mapToRelative';
-import normalizeOptions from './normalizeOptions';
-import { nodeResolvePath, replaceExtension, isRelativePath, toLocalPath, toPosixPath } from './utils';
+exports.__esModule = true;
+exports.default = resolvePath;
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _log = require('./log');
+
+var _mapToRelative = require('./mapToRelative');
+
+var _mapToRelative2 = _interopRequireDefault(_mapToRelative);
+
+var _normalizeOptions = require('./normalizeOptions');
+
+var _normalizeOptions2 = _interopRequireDefault(_normalizeOptions);
+
+var _utils = require('./utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getRelativePath(sourcePath, currentFile, absFileInRoot, opts) {
-  const realSourceFileExtension = path.extname(absFileInRoot);
-  const sourceFileExtension = path.extname(sourcePath);
+  const realSourceFileExtension = _path2.default.extname(absFileInRoot);
+  const sourceFileExtension = _path2.default.extname(sourcePath);
 
-  let relativePath = mapToRelative(opts.cwd, currentFile, absFileInRoot);
+  let relativePath = (0, _mapToRelative2.default)(opts.cwd, currentFile, absFileInRoot);
   if (realSourceFileExtension !== sourceFileExtension) {
-    relativePath = replaceExtension(relativePath, opts);
+    relativePath = (0, _utils.replaceExtension)(relativePath, opts);
   }
 
-  return toLocalPath(toPosixPath(relativePath));
+  return (0, _utils.toLocalPath)((0, _utils.toPosixPath)(relativePath));
 }
 
 function findPathInRoots(sourcePath, { extensions, root }) {
   // Search the source path inside every custom root directory
   let resolvedSourceFile;
 
-  root.some((basedir) => {
-    resolvedSourceFile = nodeResolvePath(`./${sourcePath}`, basedir, extensions);
+  root.some(basedir => {
+    resolvedSourceFile = (0, _utils.nodeResolvePath)(`./${sourcePath}`, basedir, extensions);
     return resolvedSourceFile !== null;
   });
 
@@ -40,9 +56,9 @@ function resolvePathFromRootConfig(sourcePath, currentFile, opts) {
 }
 
 function checkIfPackageExists(modulePath, currentFile, extensions) {
-  const resolvedPath = nodeResolvePath(modulePath, currentFile, extensions);
+  const resolvedPath = (0, _utils.nodeResolvePath)(modulePath, currentFile, extensions);
   if (resolvedPath === null) {
-    warn(`Could not resolve "${modulePath}" in file ${currentFile}.`);
+    (0, _log.warn)(`Could not resolve "${modulePath}" in file ${currentFile}.`);
   }
 }
 
@@ -64,40 +80,38 @@ function resolvePathFromAliasConfig(sourcePath, currentFile, opts) {
     return null;
   }
 
-  if (isRelativePath(aliasedSourceFile)) {
-    return toLocalPath(toPosixPath(
-      mapToRelative(opts.cwd, currentFile, aliasedSourceFile)),
-    );
+  return aliasedSourceFile;
+
+  if ((0, _utils.isRelativePath)(aliasedSourceFile)) {
+    return (0, _utils.toLocalPath)((0, _utils.toPosixPath)((0, _mapToRelative2.default)(opts.cwd, currentFile, aliasedSourceFile)));
   }
 
   if (process.env.NODE_ENV !== 'production') {
     checkIfPackageExists(aliasedSourceFile, currentFile, opts.extensions);
   }
-
   return aliasedSourceFile;
 }
 
-const resolvers = [
-  resolvePathFromAliasConfig,
-  resolvePathFromRootConfig,
-];
+const resolvers = [resolvePathFromAliasConfig, resolvePathFromRootConfig];
 
-export default function resolvePath(sourcePath, currentFile, opts) {
-  if (isRelativePath(sourcePath)) {
-    return sourcePath;
-  }
+function resolvePath(sourcePath, currentFile, opts) {
 
-  const normalizedOpts = normalizeOptions(currentFile, opts);
+  const normalizedOpts = (0, _normalizeOptions2.default)(currentFile, opts);
 
   // File param is a relative path from the environment current working directory
   // (not from cwd param)
-  const absoluteCurrentFile = path.resolve(currentFile);
+  const absoluteCurrentFile = _path2.default.resolve(currentFile);
+
   let resolvedPath = null;
 
-  resolvers.some((resolver) => {
+  resolvers.some(resolver => {
     resolvedPath = resolver(sourcePath, absoluteCurrentFile, normalizedOpts);
     return resolvedPath !== null;
   });
+
+  if ((0, _utils.isRelativePath)(sourcePath) && sourcePath.indexOf('APP_TARGET') === -1) {
+    return sourcePath;
+  }
 
   return resolvedPath;
 }
