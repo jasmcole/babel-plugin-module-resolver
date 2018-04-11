@@ -1,4 +1,4 @@
-# babel-plugin-module-resolver
+# babel-plugin-module-resolver-include-relative
 
 Hacky fork to include relative paths in regex replacements. Do not use!
 
