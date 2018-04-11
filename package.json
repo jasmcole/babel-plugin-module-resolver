@@ -5,7 +5,7 @@
   "description": "Module resolver plugin for Babel",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tleunen/babel-plugin-module-resolver.git"
+    "url": "https://github.com/jasmcole/babel-plugin-module-resolver-include-relative.git"
   },
   "engines": {
     "node": ">= 4.0.0"
@@ -61,5 +61,5 @@
     "compile": "babel src --out-dir lib",
     "prepublish": "npm run compile",
     "release": "standard-version"
-  },
+  }
 }
