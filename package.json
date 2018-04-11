@@ -1,6 +1,6 @@
 {
-  "name": "babel-plugin-module-resolver",
-  "version": "3.1.1",
+  "name": "babel-plugin-module-resolver-include-relative",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "description": "Module resolver plugin for Babel",
   "repository": {
@@ -14,9 +14,8 @@
     "lib"
   ],
   "author": {
-    "name": "Tommy Leunen",
-    "email": "tommy.leunen@gmail.com",
-    "url": "http://tommyleunen.com"
+    "name": "Jason Cole",
+    "email": "jcole730@gmail.com"
   },
   "license": "MIT",
   "keywords": [
@@ -59,28 +58,8 @@
     "standard-version": "^4.2.0"
   },
   "scripts": {
-    "lint": "eslint src test",
     "compile": "babel src --out-dir lib",
-    "pretest": "npm run lint",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
     "prepublish": "npm run compile",
-    "release": "standard-version",
-    "precommit": "lint-staged"
+    "release": "standard-version"
   },
-  "lint-staged": {
-    "*.{js}": [
-      "prettier-eslint --write",
-      "git add"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "/test/.*\\.test\\.js$",
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/log.js"
-    ]
-  }
 }
