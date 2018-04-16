@@ -64,11 +64,11 @@ function resolvePathFromAliasConfig(sourcePath, currentFile, opts) {
     return null;
   }
 
-  if (isRelativePath(aliasedSourceFile)) {
-    return toLocalPath(toPosixPath(
-      mapToRelative(opts.cwd, currentFile, aliasedSourceFile)),
-    );
-  }
+  //if (isRelativePath(aliasedSourceFile)) {
+  //  return toLocalPath(toPosixPath(
+  //    mapToRelative(opts.cwd, currentFile, aliasedSourceFile)),
+  //  );
+  //}
 
   if (process.env.NODE_ENV !== 'production') {
     checkIfPackageExists(aliasedSourceFile, currentFile, opts.extensions);
