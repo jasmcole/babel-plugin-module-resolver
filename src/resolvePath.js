@@ -70,9 +70,9 @@ function resolvePathFromAliasConfig(sourcePath, currentFile, opts) {
   //  );
   //}
 
-  if (process.env.NODE_ENV !== 'production') {
-    checkIfPackageExists(aliasedSourceFile, currentFile, opts.extensions);
-  }
+  //if (process.env.NODE_ENV !== 'production') {
+  //  checkIfPackageExists(aliasedSourceFile, currentFile, opts.extensions);
+  //}
 
   return aliasedSourceFile;
 }
