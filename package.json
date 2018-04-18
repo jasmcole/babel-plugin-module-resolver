@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-module-resolver-include-relative",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "lib/index.js",
   "description": "Module resolver plugin for Babel",
   "repository": {
